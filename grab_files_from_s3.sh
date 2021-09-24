@@ -14,11 +14,11 @@ function download_files() {
 
     DESTDIR="debs/${DIST}/"
 
-    aws s3 sync --endpoint-url "${AWS_ENDPOINT_URL}" "${BASEURL}kanidm-latest-${ARCHTYPE}.deb" "${DESTDIR}" || exit 1
-    aws s3 sync --endpoint-url "${AWS_ENDPOINT_URL}" "${BASEURL}kanidmd-latest-${ARCHTYPE}.deb" "${DESTDIR}" || exit 1
-    aws s3 sync --endpoint-url "${AWS_ENDPOINT_URL}" "${BASEURL}kanidm-pamnss-latest-${ARCHTYPE}.deb" "${DESTDIR}" || exit 1
-    aws s3 sync --endpoint-url "${AWS_ENDPOINT_URL}" "${BASEURL}kanidm-ssh-latest-${ARCHTYPE}.deb" "${DESTDIR}" || exit 1
-    aws s3 sync --endpoint-url "${AWS_ENDPOINT_URL}" "${BASEURL}kanidm-unixd-latest-${ARCHTYPE}.deb" "${DESTDIR}" || exit 1
+    aws s3 sync --no-progress --endpoint-url "${AWS_ENDPOINT_URL}" "${BASEURL}kanidm-latest-${ARCHTYPE}.deb" "${DESTDIR}" || exit 1
+    aws s3 sync --no-progress --endpoint-url "${AWS_ENDPOINT_URL}" "${BASEURL}kanidmd-latest-${ARCHTYPE}.deb" "${DESTDIR}" || exit 1
+    aws s3 sync --no-progress --endpoint-url "${AWS_ENDPOINT_URL}" "${BASEURL}kanidm-pamnss-latest-${ARCHTYPE}.deb" "${DESTDIR}" || exit 1
+    aws s3 sync --no-progress --endpoint-url "${AWS_ENDPOINT_URL}" "${BASEURL}kanidm-ssh-latest-${ARCHTYPE}.deb" "${DESTDIR}" || exit 1
+    aws s3 sync --no-progress --endpoint-url "${AWS_ENDPOINT_URL}" "${BASEURL}kanidm-unixd-latest-${ARCHTYPE}.deb" "${DESTDIR}" || exit 1
 }
 
 AWS_ENDPOINT_URL=https://minio-v4.housenet.yaleman.org

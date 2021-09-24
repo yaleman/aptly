@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# runs an aptly command with the conf
+
+# shellcheck disable=SC2068
+aptly -config=aptly.conf $@

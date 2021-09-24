@@ -1,0 +1,6 @@
+key.asc
+debs/**/*.deb
+.env
+.aptly
+aptly.conf
+signing-key.txt

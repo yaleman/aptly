@@ -2,13 +2,13 @@
 
 # install packages and stuff
 
-apt-get update
-apt-get -y install curl gnupg2 vim awscli
-echo 'deb http://repo.aptly.info/ squeeze main' | tee /etc/apt/sources.list.d/aptly.list
+# apt-get update
+# apt-get -y install curl gnupg2 vim awscli
+# echo 'deb http://repo.aptly.info/ squeeze main' | tee /etc/apt/sources.list.d/aptly.list
 
-curl -s https://www.aptly.info/pubkey.txt | gpg --dearmor > /etc/apt/trusted.gpg.d/aptly.gpg
-apt-get update
-apt-get -y install aptly
+# curl -s https://www.aptly.info/pubkey.txt | gpg --dearmor > /etc/apt/trusted.gpg.d/aptly.gpg
+# apt-get update
+# apt-get -y install aptly
 
 if [ ! -f aptly.conf ]; then
     echo "Couldn't find aptly.conf key, trying to pull it from s3"

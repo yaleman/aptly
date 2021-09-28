@@ -15,8 +15,7 @@ Go drinking. It's more fun.
 
 
 
+
 ```
-
-
 ./aptly-cmd publish repo kanidm-hirsute 's3:${S3_HOSTNAME}:hirsute'
 ```

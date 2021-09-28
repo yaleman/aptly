@@ -5,7 +5,7 @@ if [ -z "${1}" ]; then
     exit 1
 fi
 
-APTLY_DEST="s3:${S3_HOSTNAME}:${1}/"
+APTLY_DEST="s3:${S3_HOSTNAME}:${1}"
 APTLY_CONFIG_FILE="aptly.conf"
 
 DIR_NAME="debs/${1}"

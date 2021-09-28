@@ -27,31 +27,32 @@ if [ "$(gpg --list-keys | grep -c james)" -ne 1 ]; then
     exit 1
 fi
 
+if [ ! -d "${DIR_NAME}" ]; then
+    echo "Please grab some files to add, it gets weird otherwise."
+    echo "Put them in: ${DIR_NAME}"
+    echo ""
+    #echo "Run the following commands when done:"
+    #echo ""
+    #echo "./aptly-cmd snapshot create \"${REPO_NAME}-init\" from repo \"${REPO_NAME}\""
+    #echo "./aptly-cmd publish snapshot \"${REPO_NAME}-init\" \"${APTLY_DEST}\""
+    exit 1
+fi
+
 echo "Creating distribution ${REPO_NAME}"
 
 ./aptly-cmd repo create -distribution="$1" -component=main "${REPO_NAME}" || exit 1
 
 
 # mkdir -p "${DIR_NAME}"
+echo "Adding files to ${REPO_NAME} from ${DIR_NAME}"
+./aptly-cmd repo add "${REPO_NAME}" "${DIR_NAME}" || exit 1
 
-if [ -d "${DIR_NAME}" ]; then
-    echo "Adding files to ${REPO_NAME} from ${DIR_NAME}"
-    ./aptly-cmd repo add "${REPO_NAME}" "${DIR_NAME}" || exit 1
-else
-    echo "Please grab some files to add, it gets weird otherwise."
-    echo "Put them in: ${DIR_NAME}"
-    echo ""
-    echo "Run the following commands when done:"
-    echo ""
-    echo "./aptly-cmd snapshot create \"${REPO_NAME}-init\" from repo \"${REPO_NAME}\""
-    echo "./aptly-cmd publish snapshot \"${REPO_NAME}-init\" \"${APTLY_DEST}\""
-    exit 1
-fi
 
 echo "Creating initial snapshot"
 ./aptly-cmd snapshot create "${REPO_NAME}-init" from repo "${REPO_NAME}" || exit 1
 
-echo "Publishing initial snapshot"
+echo "Publishing initial snapshot to ${APTLY_DEST}"
+
 ./aptly-cmd publish snapshot "${REPO_NAME}-init" "${APTLY_DEST}" || exit 1
 
 echo "Done!"

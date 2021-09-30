@@ -1,5 +1,4 @@
 key.asc
-debs/**/*
 .env
 .aptly
 aptly.conf

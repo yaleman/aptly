@@ -53,6 +53,6 @@ echo "Creating initial snapshot"
 
 echo "Publishing initial snapshot to ${APTLY_DEST}"
 
-./aptly-cmd publish snapshot "${REPO_NAME}-init" "${APTLY_DEST}" || exit 1
+./aptly-cmd publish snapshot -force-overwrite "${REPO_NAME}-init" "${APTLY_DEST}" || exit 1
 
 echo "Done!"

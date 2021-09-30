@@ -18,8 +18,14 @@ for DIR in $(find ./debs/ -mindepth 1 -maxdepth 1 -exec basename {} \;); do
         echo "Creating snapshot"
         ./aptly-cmd snapshot create "${SNAPSHOT_NAME}" from repo "${APTLY_REPO}" || exit 1
 
-        echo "Publishing... ./aptly-cmd publish switch \"${APTLY_REPO}\" \"s3:${S3_HOSTNAME}:\" \"${SNAPSHOT_NAME}\""
-        ./aptly-cmd publish switch "${DIR}" "s3:${S3_HOSTNAME}:${DIR}" "${SNAPSHOT_NAME}" || exit 1
+        # ./aptly-cmd publish switch "${DIR}" "s3:${S3_HOSTNAME}:${DIR}" "${SNAPSHOT_NAME}" || exit 1
+        echo "Dropping the previous publish..."
+        aptly-cmd publish drop "${DIR}" "s3:${S3_HOSTNAME}:${DIR}"
+        APTLY_DEST="s3:${S3_HOSTNAME}:${DIR}"
+
+        echo "Publishing... "
+        aptly-cmd publish snapshot -force-overwrite "${SNAPSHOT_NAME}" "${APTLY_DEST}"
+
         echo "Done with ${DIR}"
         echo "########################################################"
     else

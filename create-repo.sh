@@ -5,7 +5,7 @@ if [ -z "${1}" ]; then
     exit 1
 fi
 
-APTLY_DEST="s3:${S3_HOSTNAME}:${1}"
+# APTLY_DEST="s3:${S3_HOSTNAME}:${1}"
 APTLY_CONFIG_FILE="aptly.conf"
 
 DIR_NAME="debs/${1}"
@@ -31,10 +31,6 @@ if [ ! -d "${DIR_NAME}" ]; then
     echo "Please grab some files to add, it gets weird otherwise."
     echo "Put them in: ${DIR_NAME}"
     echo ""
-    #echo "Run the following commands when done:"
-    #echo ""
-    #echo "./aptly-cmd snapshot create \"${REPO_NAME}-init\" from repo \"${REPO_NAME}\""
-    #echo "./aptly-cmd publish snapshot \"${REPO_NAME}-init\" \"${APTLY_DEST}\""
     exit 1
 fi
 
@@ -45,14 +41,18 @@ echo "Creating distribution ${REPO_NAME}"
 
 # mkdir -p "${DIR_NAME}"
 echo "Adding files to ${REPO_NAME} from ${DIR_NAME}"
-./aptly-cmd repo add "${REPO_NAME}" "${DIR_NAME}" || exit 1
+# ./aptly-cmd repo add "${REPO_NAME}" "${DIR_NAME}" || exit 1
+find "${DIR_NAME}" -type f -name '*.deb' -exec aptly-cmd repo add "${REPO_NAME}" {} \;
 
 
-echo "Creating initial snapshot"
-./aptly-cmd snapshot create "${REPO_NAME}-init" from repo "${REPO_NAME}" || exit 1
+# echo "Creating initial snapshot"
+# ./aptly-cmd snapshot create "${REPO_NAME}-init" from repo "${REPO_NAME}" || exit 1
 
-echo "Publishing initial snapshot to ${APTLY_DEST}"
+# echo "Publishing initial snapshot to ${APTLY_DEST}"
 
-./aptly-cmd publish snapshot -force-overwrite "${REPO_NAME}-init" "${APTLY_DEST}" || exit 1
+# ./aptly-cmd publish snapshot "${REPO_NAME}-init" "${APTLY_DEST}" || exit 1
+aptly-cmd publish "${REPO_NAME}" "${1}"
 
-echo "Done!"
+aws --endpoint-url "https://${S3_HOSTNAME}" --delete s3 sync ".aptly/public/${1}/" "s3://${S3_BUCKET}/${1}/"
+
+echo "Done with ${1}!"

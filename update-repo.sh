@@ -10,26 +10,28 @@ fi
 for DIR in $(find ./debs/ -mindepth 1 -maxdepth 1 -exec basename {} \;); do
     APTLY_REPO="kanidm-${DIR}"
     if [ "$(./aptly-cmd repo list | grep -c "${APTLY_REPO}")" -eq 1 ]; then
-
-        echo "Updating ${DIR}"
-        SNAPSHOT_NAME="${DIR}$(date '+housenet-%Y-%m-%d-%H%M%S')"
-        ./aptly-cmd repo add "${APTLY_REPO}" "debs/${DIR}" || exit 1
-
-        echo "Creating snapshot"
-        ./aptly-cmd snapshot create "${SNAPSHOT_NAME}" from repo "${APTLY_REPO}" || exit 1
-
-        ./aptly-cmd publish switch "${DIR}" "s3:${S3_HOSTNAME}:${DIR}" "${SNAPSHOT_NAME}" 
-        #echo "Dropping the previous publish..."
-        #aptly-cmd publish drop "${DIR}" "s3:${S3_HOSTNAME}:${DIR}"
-        APTLY_DEST="s3:${S3_HOSTNAME}:${DIR}"
-
-        #echo "Publishing... "
-        #aptly-cmd publish snapshot -force-overwrite "${SNAPSHOT_NAME}" "${APTLY_DEST}"
-
-        echo "Done with ${DIR}"
-        echo "########################################################"
+        echo "Uhh... repo ${APTLY_REPO} already exists, what?"
+        exit 1
     else
-        echo "Couldn't find repo ${APTLY_REPO}, skipping."
+
+        create-repo.sh "${DIR}"
+        # echo "####################################"
+        # echo "Adding files to repo ${APTLY_REPO}"
+        # #./aptly-cmd repo add "${APTLY_REPO}" "debs/${DIR}" || exit 1
+        # find "debs/${DIR}" -type f -name '*.deb' -exec aptly-cmd repo add "${APTLY_REPO}" {} \;
+
+        # SNAPSHOT_NAME="${DIR}$(date '+housenet-%Y-%m-%d-%H%M%S')"
+        # echo "Creating snapshot ${SNAPSHOT_NAME} from repo ${APTLY_REPO}and"
+
+        # ./aptly-cmd snapshot create "${SNAPSHOT_NAME}" from repo "${APTLY_REPO}" || exit 1
+
+        # echo "Running ./aptly-cmd publish switch \"${DIR}\" \"s3:${S3_HOSTNAME}:${DIR}\" \"${SNAPSHOT_NAME}\" || exit 1"
+        # ./aptly-cmd -force-overwrite publish switch "${DIR}" "s3:${S3_HOSTNAME}:${DIR}" "${SNAPSHOT_NAME}" || exit 1
+
+        # aws --endpoint-url "https://${S3_HOSTNAME}" --delete s3 sync .aptly/public/buster/ "s3://${S3_BUCKET}/${DIR}/"
+        # echo "Done with ${DIR}"
+        # echo "########################################################"
+
     fi
 done
 

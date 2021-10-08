@@ -51,7 +51,7 @@ find "${DIR_NAME}" -type f -name '*.deb' -exec aptly-cmd repo add "${REPO_NAME}"
 # echo "Publishing initial snapshot to ${APTLY_DEST}"
 
 # ./aptly-cmd publish snapshot "${REPO_NAME}-init" "${APTLY_DEST}" || exit 1
-aptly-cmd publish "${REPO_NAME}" "${1}"
+aptly-cmd publish repo  "${REPO_NAME}" "${1}"
 
 aws --endpoint-url "https://${S3_HOSTNAME}" --delete s3 sync ".aptly/public/${1}/" "s3://${S3_BUCKET}/${1}/"
 

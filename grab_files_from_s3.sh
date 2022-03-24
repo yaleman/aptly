@@ -3,7 +3,6 @@
 # files
 
 
-AWS_ENDPOINT_URL=https://minio.housenet.yaleman.org
 
 S3_BASE="s3://${PACKAGE_SOURCE_BUCKET}"
 # echo "S3 source: ${S3_BASE}"

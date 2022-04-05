@@ -10,7 +10,10 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-`uname -m`.zip" -o "$TMP
 RUN unzip "$TMPDIR/awscliv2.zip"
 RUN "$TMPDIR/aws/install"
 
-RUN echo 'deb http://repo.aptly.info/ squeeze main' | tee /etc/apt/sources.list.d/aptly.list
+#RUN echo 'deb http://repo.aptly.info/ squeeze main' | tee /etc/apt/sources.list.d/aptly.list
+# use nightly builds
+RUN echo 'deb http://repo.aptly.info/ nightly main' | tee /etc/apt/sources.list.d/aptly.list
+
 
 RUN curl -s https://www.aptly.info/pubkey.txt | gpg --dearmor > /etc/apt/trusted.gpg.d/aptly.gpg
 RUN apt-get update

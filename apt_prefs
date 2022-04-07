@@ -1,0 +1,9 @@
+# forces the nightly repo
+Package: *
+Pin: origin repo.aptly.info
+Pin-Priority: 1700
+
+# bans the deb.debian.org repo
+Package: aptly*
+Pin: origin deb.debian.org
+Pin-Priority: -1

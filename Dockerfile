@@ -14,10 +14,12 @@ RUN "$TMPDIR/aws/install"
 # use nightly builds
 RUN echo 'deb http://repo.aptly.info/ nightly main' | tee /etc/apt/sources.list.d/aptly.list
 
+COPY apt_prefs /etc/apt/preferences
 
 RUN curl -s https://www.aptly.info/pubkey.txt | gpg --dearmor > /etc/apt/trusted.gpg.d/aptly.gpg
 RUN apt-get update
 RUN apt-get -y install aptly
+
 
 WORKDIR /data
 

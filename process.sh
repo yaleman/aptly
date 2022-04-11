@@ -2,9 +2,6 @@
 
 aptly version
 
-exit 1
-
-
 cd /data || exit 1
 
 echo "####################################"

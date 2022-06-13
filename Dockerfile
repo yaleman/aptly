@@ -18,8 +18,7 @@ COPY apt_prefs /etc/apt/preferences
 
 RUN curl -s https://www.aptly.info/pubkey.txt | gpg --dearmor > /etc/apt/trusted.gpg.d/aptly.gpg
 RUN apt-get update
-RUN apt-get -y install aptly
-
+RUN apt-get -y install aptly xz-utils bzip2
 
 WORKDIR /data
 

@@ -10,7 +10,7 @@ fi
 for DIR in $(find ./debs/ -mindepth 1 -maxdepth 1 -exec basename {} \;); do
     APTLY_REPO="kanidm-${DIR}"
     if [ "$(./aptly-cmd repo list | grep -c "${APTLY_REPO}")" -eq 1 ]; then
-        echo "Uhh... repo ${APTLY_REPO} already exists, what?"
+        echo "Uhh... repo ${APTLY_REPO} already exists, can't really continue - run 'clean-repo.sh ${DIR}'"
         exit 1
     else
 
